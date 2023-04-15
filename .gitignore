@@ -4,6 +4,6 @@
 */.env
 */.env.local
 
-# node_modules and node_modules folders inside other folders
+# node_modules
 node_modules
 */node_modules
