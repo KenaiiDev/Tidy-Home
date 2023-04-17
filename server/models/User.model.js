@@ -20,9 +20,16 @@ const userSchema = new Schema({
     },
     role: {
         type: ObjectId,
-        ref: 'TidyRole',
-        required: true
+        ref: 'TidyRole'
     },
+    home: {
+        type: ObjectId,
+        ref: 'TidyHome'
+    },
+    busySchedule: [{
+        from: Date,
+        to: Date
+    }],
     hash: String,
     salt: String,
 }, {timestamps: true});
@@ -32,12 +39,14 @@ const userSchema = new Schema({
 //setPassword method first create a salt for every user
 //then it hashes the salt with user password and create a hash
 //this hash is stored in the database as user password
-UserSchema.methods.setPassword = password => {
+userSchema.methods.setPassword = function(password){
     //Create a unique salt for a particular user
+    console.log("set password")
     this.salt = crypto.randomBytes(16).toString('hex');
 
     //Hash user's salt and password
     this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+    console.log(this)
 }
 
 // Method to check the entered password is correct or not
@@ -51,7 +60,7 @@ UserSchema.methods.setPassword = password => {
 // If the user's hash is equal to generated hash
 // then the password is correct otherwise not
 
-UserSchema.methods.validPassword = password => {
+userSchema.methods.validPassword = function(password){
     const hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
     return this.hash === hash;
 }
