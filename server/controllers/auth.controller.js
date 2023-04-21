@@ -75,19 +75,19 @@ exports.login = (req, res) => {
 
       if (user.status === "pending")
         return res.status(400).json({ error: "User not confirmed" });
-
-      const token = jwt.sign({ email }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
-      });
       user.password = undefined;
       user.confirmationCode = undefined;
       user.salt = undefined;
       user.hash = undefined;
+      const token = jwt.sign({ _id, email }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
       return res
         .status(200)
         .json({ message: "User logged in successfully", user, token });
     })
     .catch((err) => {
+      console.log("error");
       return res.status(400).json({ error: err });
     });
 };

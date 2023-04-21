@@ -11,7 +11,6 @@ const {
   userById,
 } = require("../controllers/auth.controller");
 
-router.get("/test", [validateToken], test);
 router.get("/validate/:confirmationCode", validate);
 
 router.post("/register", register);
