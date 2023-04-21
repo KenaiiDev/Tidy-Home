@@ -25,7 +25,7 @@ mongoose.connect(process.env.DATABASE_URL, {
 })
 
 //routes
-
+app.use('/api/auth', require('./routes/auth.routes'));
 
 const port = process.env.PORT || 4000;
 
